@@ -39,7 +39,13 @@ object BookKafkaConsumer {
       .option("path", OUTPUT_BASE_PATH)
       .option("checkpointLocation", CHECKPOINT_LOCATION)
       .start()
-      .awaitTermination()
+
+    val consoleQuery = filteredDF.writeStream
+      .outputMode("append")
+      .format("console")
+      .start()
+
+    spark.streams.awaitAnyTermination()
 
   }
 }
